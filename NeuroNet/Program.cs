@@ -13,9 +13,9 @@ namespace NeuroNet
     private static NeuroNet.Neuronet neuronet;
     private static float MinimumError = 0.01f;
 
-    public static void Train(float taskNumber, float devNumber, float labor, float complNumber)
+    public static void Train(float taskNumber, float devNumber, float testNumber, float labor, float complNumber)
     {
-      double[] input = { taskNumber, devNumber, labor };
+      double[] input = { taskNumber, devNumber, testNumber, labor };
       double[] output = { complNumber };
       dataSets.Add(new NeuroNet.DataSet(input, output));
 
@@ -26,6 +26,7 @@ namespace NeuroNet
     {
       public float taskNumber;
       public float devNumber;
+      public float testNumber;
       public float labor;
       public float complNumber;
     }
@@ -34,7 +35,7 @@ namespace NeuroNet
     {
       Console.WriteLine("Start training neuronet... ");
       dataSets = new List<NeuroNet.DataSet>();
-      neuronet = new NeuroNet.Neuronet(3, 5, 1);
+      neuronet = new NeuroNet.Neuronet(4, 5, 1);
       var data = new List<DataStruct>();
       /* Input Data:
          -- nuber of tasks; 
@@ -45,13 +46,17 @@ namespace NeuroNet
          -- number of completed tasks.
        */
 
-      data.Add(new DataStruct() { taskNumber = 30f, devNumber = 4f, labor = 68f, complNumber = 11f} );
-      data.Add(new DataStruct() { taskNumber = 26f, devNumber = 4f, labor = 54f, complNumber = 14f} );
-      data.Add(new DataStruct() { taskNumber = 16f, devNumber = 4f, labor = 32f, complNumber = 16f} );
-      data.Add(new DataStruct() { taskNumber = 5f, devNumber = 1f, labor = 8f, complNumber = 4f });
+      data.Add(new DataStruct() { taskNumber = 26f, devNumber = 4f, testNumber = 4f, labor = 105.5f, complNumber = 11f} );
+      data.Add(new DataStruct() { taskNumber = 33f, devNumber = 3f, testNumber = 4f, labor = 93.5f, complNumber = 6f} );
+      data.Add(new DataStruct() { taskNumber = 38f, devNumber = 3f, testNumber = 4f, labor = 105f, complNumber = 19f} );
+      data.Add(new DataStruct() { taskNumber = 30f, devNumber = 3f, testNumber = 4f, labor = 37f, complNumber = 30f });
+      data.Add(new DataStruct() { taskNumber = 26f, devNumber = 4f, testNumber = 5f, labor = 34f, complNumber = 26f });
+      data.Add(new DataStruct() { taskNumber = 23f, devNumber = 4f, testNumber = 5f, labor = 71f, complNumber = 15f });
+      data.Add(new DataStruct() { taskNumber = 20f, devNumber = 4f, testNumber = 4f, labor = 71f, complNumber = 15f });
 
       var maxTaskNumber = data.Select(x => x.taskNumber).Max();
       var maxDevNumber = data.Select(x => x.devNumber).Max();
+      var maxTestNumber = data.Select(x => x.testNumber).Max();
       var maxLabor = data.Select(x => x.labor).Max();
       var maxComplNumber = data.Select(x => x.complNumber).Max();
 
@@ -60,7 +65,7 @@ namespace NeuroNet
       {
         itemCount++;
         Console.WriteLine(string.Format("Train {0} - Start", itemCount));
-        Train(item.taskNumber/maxTaskNumber, item.devNumber/maxDevNumber, item.labor/maxLabor, item.complNumber/maxComplNumber);
+        Train(item.taskNumber/maxTaskNumber, item.devNumber/maxDevNumber, item.testNumber/maxTestNumber, item.labor/maxLabor, item.complNumber/maxComplNumber);
         Console.WriteLine(string.Format("Train {0} - End", itemCount));
       }
 
@@ -70,18 +75,21 @@ namespace NeuroNet
 
       while (!readline.Equals("quit"))
       {
-        Console.Write("taskNumber: ");
+        Console.Write("Количество задач: ");
         var taskNumberStr = Console.ReadLine();
-        Console.Write("devNumber: ");
+        Console.Write("Число разработчиков: ");
         var devNumberStr = Console.ReadLine();
-        Console.Write("labor: ");
+        Console.Write("Число консультантов: ");
+        var testNumberStr = Console.ReadLine();
+        Console.Write("Общая плановая трудоемкость: ");
         var laborStr = Console.ReadLine();
 
         var taskNumber = float.Parse(taskNumberStr);
         var devNumber = float.Parse(devNumberStr);
+        var testNumber = float.Parse(testNumberStr);
         var labor = float.Parse(laborStr);
 
-        double[] input = { taskNumber/maxTaskNumber, devNumber/maxDevNumber, labor/maxLabor };
+        double[] input = { taskNumber/maxTaskNumber, devNumber/maxDevNumber, testNumber / maxTestNumber, labor /maxLabor };
 
         double[] compute = neuronet.Compute(input);
 
@@ -89,8 +97,13 @@ namespace NeuroNet
 
         foreach (var item in compute)
         {
-          Console.Write((item* maxComplNumber).ToString());
+          var result = item * maxComplNumber;
+          if (result > taskNumber)
+            result = taskNumber;
+          
+          Console.Write(((int)result).ToString());
         }
+        Console.WriteLine();
         Console.WriteLine("===================");
         readline = Console.ReadLine();
       }
