@@ -53,6 +53,7 @@ namespace NeuroNet
       data.Add(new DataStruct() { taskNumber = 30f, devNumber = 3f, testNumber = 4f, devDays = 5f, labor = 92f, complNumber = 8f });
       data.Add(new DataStruct() { taskNumber = 26f, devNumber = 4f, testNumber = 5f, devDays = 5f, labor = 82f, complNumber = 14f });
       data.Add(new DataStruct() { taskNumber = 23f, devNumber = 4f, testNumber = 5f, devDays = 5f, labor = 71f, complNumber = 15f });
+      data.Add(new DataStruct() { taskNumber = 21f, devNumber = 4f, testNumber = 3f, devDays = 4f, labor = 50f, complNumber = 13f });
 
       var maxTaskNumber = data.Select(x => x.taskNumber).Max();
       var maxDevNumber = data.Select(x => x.devNumber).Max();
