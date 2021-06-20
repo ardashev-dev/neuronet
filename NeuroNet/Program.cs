@@ -9,19 +9,6 @@ namespace NeuroNet
   class Program
   {
 
-    private static List<NeuroNet.DataSet> dataSets;
-    private static NeuroNet.Neuronet neuronet;
-    private static float MinimumError = 0.01f;
-
-    public static void Train(float taskNumber, float devNumber, float testNumber, float devDays, float labor, float complNumber)
-    {
-      double[] input = { taskNumber, devNumber, testNumber, labor, devDays };
-      double[] output = { complNumber };
-      dataSets.Add(new NeuroNet.DataSet(input, output));
-
-      neuronet.Train(dataSets, MinimumError, int.MaxValue);
-    }
-
     public struct DataStruct
     {
       public float taskNumber;
@@ -34,9 +21,10 @@ namespace NeuroNet
 
     static void Main(string[] args)
     {
-      Console.WriteLine("Start training neuronet... ");
-      dataSets = new List<NeuroNet.DataSet>();
-      neuronet = new NeuroNet.Neuronet(5, 6, 1);
+      
+
+      var nBuilder = new NeuroNet.NeuronetBuilder(5, 6, 1);
+      
       var data = new List<DataStruct>();
       /* Input Data:
          -- nuber of tasks; 
@@ -62,19 +50,39 @@ namespace NeuroNet
       var maxLabor = data.Select(x => x.labor).Max();
       var maxComplNumber = data.Select(x => x.complNumber).Max();
 
+      //Console.WriteLine("Start training neuronet... ");
+      /*
       var itemCount = 0;
+      float minimumError = 0.01f;
+      var inputList = new List<double[]>();
+      var outputList = new List<double[]>();
       foreach (var item in data)
       {
         itemCount++;
         Console.WriteLine(string.Format("Train {0} - Start", itemCount));
-        Train(item.taskNumber/maxTaskNumber, item.devNumber/maxDevNumber, item.testNumber/maxTestNumber, item.labor/maxLabor, item.devDays/maxDevDays, item.complNumber/maxComplNumber);
-        Console.WriteLine(string.Format("Train {0} - End", itemCount));
+        double[] input = { item.taskNumber / maxTaskNumber, item.devNumber / maxDevNumber, 
+          item.testNumber / maxTestNumber, item.labor / maxLabor, item.devDays / maxDevDays };
+        double[] output = { item.complNumber / maxComplNumber };
+        inputList.Add(input);
+        outputList.Add(output);
       }
 
+      var resultData = nBuilder.Train(inputList, outputList, minimumError);
+
+      nBuilder.SaveToFile(resultData, @"E:\TMP\neuronetWeigths.txt");
+      
       Console.WriteLine("End training neuronet. ");
+       
+       */
 
-      var readline = Console.ReadLine();
+      var resultData = nBuilder.LoadFromFile(@"E:\TMP\neuronetWeigths.txt");
 
+      nBuilder.Load(resultData);
+
+      var neuronet = nBuilder.GetNeuronet();
+
+
+      var readline = string.Empty;
       while (!readline.Equals("quit"))
       {
         Console.Write("Количество задач: ");

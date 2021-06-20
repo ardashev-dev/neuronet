@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuroNet.NeuroNet
 {
-  class Neuron
+  public class Neuron
   {
 		public List<Synapse> InputSynapses { get; set; }
 		public List<Synapse> OutputSynapses { get; set; }
@@ -37,7 +37,7 @@ namespace NeuroNet.NeuroNet
 			}
 		}
 
-		public virtual double CalculateValue()
+		public double CalculateValue()
 		{
 			return Value = Sigmoid.Output(InputSynapses.Sum(a => a.Weight * a.InputNeuron.Value) + Bias);
 		}

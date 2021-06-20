@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuroNet.NeuroNet
 {
-  class DataSet
+  public class DataSet
   {
 		public double[] Values { get; set; }
 		public double[] Targets { get; set; }

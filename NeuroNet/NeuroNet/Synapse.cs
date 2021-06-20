@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuroNet.NeuroNet
 {
-  class Synapse
+  public class Synapse
   {
 		public Neuron InputNeuron { get; set; }
 		public Neuron OutputNeuron { get; set; }
