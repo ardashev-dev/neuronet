@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace NeuroNet.NeuroNet
+namespace SimpleNeuroNet
 {
-  public class Synapse
-  {
+	public class Synapse
+	{
 		public Neuron InputNeuron { get; set; }
 		public Neuron OutputNeuron { get; set; }
 		public double Weight { get; set; }

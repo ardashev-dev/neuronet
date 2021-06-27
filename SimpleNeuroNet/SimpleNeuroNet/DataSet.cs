@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace NeuroNet.NeuroNet
+namespace SimpleNeuroNet
 {
-  public class DataSet
-  {
+	public class DataSet
+	{
 		public double[] Values { get; set; }
 		public double[] Targets { get; set; }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeuroNet
+namespace CalculateDevelopers
 {
   class Program
   {
@@ -21,10 +21,10 @@ namespace NeuroNet
 
     static void Main(string[] args)
     {
-      
 
-      var nBuilder = new NeuroNet.NeuronetBuilder(5, 6, 1);
-      
+      Console.WriteLine("Here");
+      var nBuilder = new SimpleNeuroNet.NeuronetBuilder(5, 6, 1);
+
       var data = new List<DataStruct>();
       /* Input Data:
          -- nuber of tasks; 
@@ -51,7 +51,7 @@ namespace NeuroNet
       var maxComplNumber = data.Select(x => x.complNumber).Max();
 
       //Console.WriteLine("Start training neuronet... ");
-      /*
+      
       var itemCount = 0;
       float minimumError = 0.01f;
       var inputList = new List<double[]>();
@@ -69,15 +69,15 @@ namespace NeuroNet
 
       var resultData = nBuilder.Train(inputList, outputList, minimumError);
 
-      nBuilder.SaveToFile(resultData, @"E:\TMP\neuronetWeigths.txt");
+      nBuilder.SaveToFile(resultData, @"neuronetWeigths.txt");
       
       Console.WriteLine("End training neuronet. ");
        
-       */
+       
 
-      var resultData = nBuilder.LoadFromFile(@"E:\TMP\neuronetWeigths.txt");
+      var getResultData = nBuilder.LoadFromFile(@"neuronetWeigths.txt");
 
-      nBuilder.Load(resultData);
+      nBuilder.Load(getResultData);
 
       var neuronet = nBuilder.GetNeuronet();
 
@@ -102,7 +102,7 @@ namespace NeuroNet
         var testNumber = float.Parse(testNumberStr);
         var labor = float.Parse(laborStr);
 
-        double[] input = { taskNumber/maxTaskNumber, devNumber/maxDevNumber, testNumber / maxTestNumber, devDays/maxDevDays, labor /maxLabor };
+        double[] input = { taskNumber / maxTaskNumber, devNumber / maxDevNumber, testNumber / maxTestNumber, devDays / maxDevDays, labor / maxLabor };
 
         double[] compute = neuronet.Compute(input);
 
@@ -113,7 +113,7 @@ namespace NeuroNet
           var result = item * maxComplNumber;
           if (result > taskNumber)
             result = taskNumber;
-          
+
           Console.Write(((int)result).ToString());
         }
         Console.WriteLine();

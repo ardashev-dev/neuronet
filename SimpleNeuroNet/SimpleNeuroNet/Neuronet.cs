@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 
-namespace NeuroNet.NeuroNet
+namespace SimpleNeuroNet
 {
-  public class Neuronet
-  {
+	public class Neuronet
+	{
 		public double LearnRate { get; set; }
 		public double Momentum { get; set; }
 		public List<Neuron> InputLayer { get; set; }

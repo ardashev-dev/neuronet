@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NeuroNet.NeuroNet
+namespace SimpleNeuroNet
 {
-  public class Neuron
-  {
+	public class Neuron
+	{
 		public List<Synapse> InputSynapses { get; set; }
 		public List<Synapse> OutputSynapses { get; set; }
 		public int Layer { get; set; }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Linq;
+using System.Text.Json;
 
-namespace NeuroNet.NeuroNet
+namespace SimpleNeuroNet
 {
   public class NeuronetBuilder
   {
@@ -21,7 +20,7 @@ namespace NeuroNet.NeuroNet
       HiddenLayerSize = hiddenLayerSize;
       OutputLayerSize = outputLayerSize;
       NumHiddenLayers = numHiddenLayers;
-      neuronet = new NeuroNet.Neuronet(inputLayerSize, hiddenLayerSize, outputLayerSize, numHiddenLayers, learnRate, momentum);
+      neuronet = new Neuronet(inputLayerSize, hiddenLayerSize, outputLayerSize, numHiddenLayers, learnRate, momentum);
     }
 
     public Neuronet GetNeuronet()
@@ -62,8 +61,8 @@ namespace NeuroNet.NeuroNet
       foreach (var input in inputList)
       {
         var output = outputList.ToArray();
-        var dataSets = new List<NeuroNet.DataSet>();
-        dataSets.Add(new NeuroNet.DataSet(input, output[number]));
+        var dataSets = new List<DataSet>();
+        dataSets.Add(new DataSet(input, output[number]));
         neuronet.Train(dataSets, minimumError, int.MaxValue);
         number++;
       }
@@ -139,14 +138,14 @@ namespace NeuroNet.NeuroNet
 
     public void SaveToFile(NeuronetData neuronetData, string path)
     {
-      var jsonString = JsonConvert.SerializeObject(neuronetData);
+      var jsonString = JsonSerializer.Serialize(neuronetData);
       System.IO.File.WriteAllText(path, jsonString);
     }
 
     public NeuronetData LoadFromFile(string path)
     {
       var jsonString = System.IO.File.ReadAllText(path);
-      var neuronetData = JsonConvert.DeserializeObject<NeuronetData>(jsonString);
+      var neuronetData = JsonSerializer.Deserialize<NeuronetData>(jsonString);
       return neuronetData;
     }
 
